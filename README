@@ -455,7 +455,63 @@ move_to(target, position='first-child')
 Если target  является None - это указывает на то, что экземпляр модели должен быть включен в корневой узел.
 Аргумент position( положение) не учитывается в данном случае.
 
+-----------------------------
 
+Допустимые значения для аргумента position и их эффект на перемещение:
+'first-child'
+    Экземпляр в качестве своего нового родительского узла принимает target. Встраивается в качестве его первого дочернего узла (first child) в древовидной структуре
+
+
+'last-child'
+    Экземпляр в качестве своего нового родительского узла принимает target. Встраивается в качестве его последнего дочернего узла (last-child) в древовидной структуре
+
+
+'left'
+    The instance being moved should have target‘s parent set as its new parent and should be placed directly before target in the tree structure.
+
+Экземпляр , который перемещается, в качестве родителя будет воспринимать  список узлов, в котором находится узел target, В списке он встроится непосредственно перед узлом target.(от переводчика, скорее всего имелось ввиду, что родителем будет родительский узел всего этого списка, и переносимый экземпляр просто  встроится в этот список до target )
+
+
+'right'
+ тоже самое что и 'left' но только  встраивается после target.
+-----------
+Если мы передадим неправильное значение  аргументу position, то вызовится исключение ValueError
+
+Обратите внимание, что некоторые из шагов, которые
+Вы могли бы попытаться сделать с помощью этого метода являются недопустимыми.
+
+Например,  допустим,  у нас есть объект , его дочерний и внучатый объект,
+Невозможно  перенести объект и сделать
+его дочерним относительно его же дочернего или внучатого объекта.
+В этом случае  будет возбуждено исключение mptt.exceptions.InvalidMove
+
+
+Сам экземпляр притерпевает изменения, так что наиболее правильным 
+будет сохранить обновление в БД после вызова этого метода.
+----------------------------------------------------------------------------------------------
+TreeForeignKey, TreeOneToOneField, TreeManyToManyField 
+http://django-mptt.github.io/django-mptt/models.html#treeforeignkey-treeonetoonefield-treemanytomanyfield
+New in version 0.5.
+
+ New in version 0.5.
+
+It’s recommended you use mptt.fields.TreeForeignKey wherever you have a foreign key to an MPTT model. This includes the parent link you’ve just created on your model.
+
+TreeForeignKey is just like a regular ForeignKey but it makes the default form field display choices in tree form.
+
+There are also TreeOneToOneField and TreeManyToManyField if you need them. These may come in useful on other models that relate to your tree model in some way.
+
+Если вы хотите иметь в своей модели внешний ключ и использовать django-mptt, 
+то воспользуйтесь mptt.fields.TreeForeignKey
+он включает в себя ссылку на родителя.
+
+TreeForeignKey подобен обычному ForeignKey, он делает по умолчанию отображение полей форм выбора
+в виде древовидной структуры( конечно, там где это нужно)
+
+Также есть TreeOneToOneField и  TreeManyToManyField поля.
+Они могут пригодиться в других моделях, которые ссылаются на вашу древовидную модель.
+
+--------------------------------------------------------   
 
 
 
